@@ -25,8 +25,10 @@ SECRET_KEY = '+2b99m#slswea3sww43m0y^rvunviz$kez=b)_zh4nhzpjpx6c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.139', ]
 
+AUTH_USER_MODEL = 'users.User'
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
@@ -39,11 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party
+    'oauth2_provider',
+    'corsheaders',
     'django_extensions',
     'rest_framework',
     'fcm_django',
 
     # my apps
+    'users',
     'mule',
 ]
 
@@ -52,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -106,6 +112,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 
 # Internationalization

@@ -1,9 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+
+from users.models import User
 
 
-class User(AbstractBaseUser):
-    device_id = models.IntegerField()
+class PlayList(models.Model):
+    owner = models.ForeignKey(User, related_name="playlists")
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Video(models.Model):
@@ -17,6 +22,10 @@ class Video(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_audio = models.BooleanField(default=True)
     file_encoded = models.FileField(null=True, blank=True)
+    playlist = models.ForeignKey(PlayList, related_name="items")
+
+    def __str__(self):
+        return self.title
 
 
 class Statistic(models.Model):
@@ -25,11 +34,5 @@ class Statistic(models.Model):
     original_size = models.BigIntegerField()
     final_size = models.BigIntegerField()
 
-
-class PlayList(models.Model):
-    owner = models.ForeignKey(User, related_name="playlists")
-
-
-class PlayListItem(models.Model):
-    parent = models.ForeignKey(PlayList, related_name="items")
-    content = models.ForeignKey(Video)
+    # def __str__(self):
+    #     return self.title
