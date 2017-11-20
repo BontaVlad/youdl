@@ -1,7 +1,9 @@
 import React from "react";
 import { AppRegistry, Image, StatusBar } from "react-native";
 import { Container, Content, Text, List, ListItem } from "native-base";
-const routes = ["Home", "Chat", "Profile"];
+const routes = ["Home", "Stats", "Settings"];
+
+
 export default class SideBar extends React.Component {
   render() {
     return (
@@ -9,7 +11,7 @@ export default class SideBar extends React.Component {
         <Content>
           <Image
             source={{
-              uri: "https://github.com/GeekyAnts/NativeBase-KitchenSink/raw/react-navigation/img/drawer-cover.png"
+              uri: "../Resources/drawer-cover.png"
             }}
             style={{
               height: 120,

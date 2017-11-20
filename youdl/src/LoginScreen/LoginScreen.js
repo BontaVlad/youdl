@@ -2,16 +2,25 @@ import React, { Component } from 'react';
 import { Container, Header, Body, Text, Title, Content, Form, Item, Input, Label, Button } from 'native-base';
 import { Alert } from 'react-native';
 import Mailer from 'react-native-mail';
+import { StackNavigator } from "react-navigation";
 
+export default class LoginScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            password: '',
+        };
+    }
 
-export default class InlineLabelExample extends Component {
     submit = () => {
+        this.props.navigation.navigate("Home");
         Mailer.mail({
             subject: 'need help',
             recipients: ['support@example.com'],
             ccRecipients: ['supportCC@example.com'],
             bccRecipients: ['supportBCC@example.com'],
-            body: '<b>A Bold Body</b>',
+            body: "<b>You're username: " + this.state.username + " and password: " + this.state.password + "</b>",
             isHTML: true,
             attachment: {
                 path: '',  // The absolute path of the file from which to read data.
@@ -43,12 +52,18 @@ export default class InlineLabelExample extends Component {
                     <Form>
                         <Item floatingLabel>
                             <Label>Username</Label>
-                            <Input />
+                            <Input
+                                value={this.state.username}
+                                onChangeText={(username) => this.setState({username})}
+                            />
                         </Item>
 
                         <Item floatingLabel last>
                             <Label>Password</Label>
-                            <Input />
+                            <Input
+                                value={this.state.password}
+                                onChangeText={(password) => this.setState({password})}
+                            />
                         </Item>
                     </Form>
 
