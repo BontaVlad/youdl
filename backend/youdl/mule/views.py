@@ -3,6 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from mule.serializers import PlaylistSerializer
+from mule.models import PlayList
 
 
 class PlaylistViewSet(viewsets.ViewSet):
@@ -10,9 +11,16 @@ class PlaylistViewSet(viewsets.ViewSet):
     A simple ViewSet for listing or retrieving users.
     """
 
-    def get_playlist_data(self, request, pk):
+    def get_playlist(self, request, pk):
         queryset = request.user.playlists.all()
         return get_object_or_404(queryset, pk=pk)
+
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def list(self, request):
         queryset = request.user.playlists.all()

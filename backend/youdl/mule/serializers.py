@@ -7,7 +7,7 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Video
-        fields = ('owner', 'yt_id', 'title', 'url', 'ext', 'release_date',
+        fields = ('id', 'owner', 'yt_id', 'title', 'url', 'ext', 'release_date',
                 'duration', 'is_audio', 'file_encoded')
 
 
@@ -17,4 +17,4 @@ class PlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayList
         # fields = ('owner', 'name', 'items')
-        fields = ('owner', 'name', "items")
+        fields = ('id', 'owner', 'name', "items")

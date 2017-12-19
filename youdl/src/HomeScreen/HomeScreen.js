@@ -1,8 +1,9 @@
 import React from "react";
-import { StatusBar } from "react-native";
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, List, ListItem, SwipeRow} from "native-base";
+import { StatusBar, ListView, Modal} from "react-native";
+import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, List, ListItem, SwipeRow, Form, Item, Input, Label } from "native-base";
 import urls from "../Core/urls.js"
 import Donkey from "../Core/Donkey.js"
+import _ from 'lodash';
 
 import LoginScreen from "../LoginScreen/LoginScreen.js";
 
@@ -12,7 +13,10 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = {
             loggedIn: true,
-            items: []
+            items: [],
+            modalVisible: false,
+            modalValue: '',
+            modalCallback: null,
         }
     }
 
@@ -25,15 +29,31 @@ export default class HomeScreen extends React.Component {
     }
 
     async fetchData(){
-        try{
-            let response = await Donkey.get(urls.PLAYLISTS);
-            // let response = await Donkey.get('https://httpbin.org/anything');
-            console.log(response);
-            this.setState({items: response});
-            //this.props.navigation.setParams({isAnimating: false});
-        } catch(error){
+        let response = await Donkey.get(urls.PLAYLISTS);
+        this.setState({items: response});
+        //this.props.navigation.setParams({isAnimating: false});
+    }
+
+    async addVideo() {
+    }
+
+    async addPlaylist() {
+        console.warn(this.state.modalValue);
+        let response = await Donkey.post(urls.PLAYLISTS, {name: this.state.modalValue});
+        // this.setState({items: response});
+    }
+
+    async delete(id) {
+        // make a more pretty url build
+        try {
+            await Donkey.delete(urls.PLAYLISTS + id + '/');
+            _.remove(this.state.items, {id: id});
+            this.setState({items: this.state.items});
+        }
+        catch(error) {
             console.error(error);
         }
+
     }
 
     render() {
@@ -50,7 +70,14 @@ export default class HomeScreen extends React.Component {
                 <Body>
                     <Title>HomeScreen</Title>
                 </Body>
-                <Right />
+                <Right>
+                    <Button success onPress={() => {
+                        this.setState({modalVisible: true})
+                        this.setState({modalCallback: this.addPlaylist})}
+                                            }>
+                    <Icon active name="add" />
+                    </Button>
+                </Right>
                 </Header>
                 <Content padder>
 
@@ -60,7 +87,10 @@ export default class HomeScreen extends React.Component {
                                leftOpenValue={75}
                                rightOpenValue={-75}
                                left={
-                                       <Button success onPress={() => alert('Add')}>
+                                       <Button success onPress={() => {
+                                           this.setState({modalVisible: true})
+                                           this.setState({modalCallback: this.addVideo})}
+                                                               }>
                                        <Icon active name="add" />
                                        </Button>
                                }
@@ -70,13 +100,45 @@ export default class HomeScreen extends React.Component {
                                        </ListItem>
                                }
                                right={
-                                       <Button danger onPress={() => alert('Trash')}>
+                                       <Button danger onPress={() => this.delete(item.id)}>
                                        <Icon active name="trash" />
                                        </Button>
                                }
                                />
                 }>
                 </List>
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {alert("Modal has been closed.")}} >
+                    <Content>
+                    <Form>
+                        <Item inlineLabel>
+                            <Label>Name</Label>
+                            <Input
+                                value={this.state.videoUrl}
+                                onChangeText={(modalValue) => this.setState({modalValue})}
+                            />
+                        </Item>
+
+                        <Button onPress={() => {
+                            this.state.modalCallback()
+                            this.setState({modalVisible: false})
+                        }}>
+                        <Text>Add</Text>
+                        </Button>
+
+                        <Button onPress={() => {
+                            this.setState({modalVisible: false})
+                            this.setState({modalValue: ''})
+                        }}>
+                            <Text>Cancel</Text>
+                        </Button>
+                    </Form>
+                </Content>
+                </Modal>
+
                 </Content>
             </Container>
         );
