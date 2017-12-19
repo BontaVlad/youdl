@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, List, ListItem} from "native-base";
+import RadarChart from "RadarChart";
 
 export default class Details extends React.Component {
     static navigationOptions = {
@@ -11,7 +12,20 @@ export default class Details extends React.Component {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.item,
+            selected: false,
+            data = [{
+                "speed": 74,
+                "balance": 29,
+                "explosives": 40,
+                "energy": 40,
+                "flexibility": 30,
+                "agility": 25,
+                "endurance": 44
+            }],
         }
+    }
+
+    onValueChange(obj) {
     }
 
     render() {
@@ -32,6 +46,7 @@ export default class Details extends React.Component {
                 </Header>
                 <Content padder>
                     <Text>{this.state.item.name}</Text>
+                    <Radar/>
                 </Content>
             </Container>
         );
