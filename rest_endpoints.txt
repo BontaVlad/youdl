@@ -1,12 +1,12 @@
-GET http://172.30.113.214:8000/mule/playlists/
+GET http://127.0.0.1:8000/mule/playlists/
 Content-Type: application/json
 Authorization: Bearer xV64DnvkYoHPZdKqBAy8r7OceGr9Gh
 
 
-POST http://172.30.113.214:8000/mule/playlists/
-Content-Type: application/json
-Authorization: Bearer xV64DnvkYoHPZdKqBAy8r7OceGr9Gh
+# POST http://127.0.0.1:8000/mule/playlists/
+# Content-Type: application/json
+# Authorization: Bearer xV64DnvkYoHPZdKqBAy8r7OceGr9Gh
 
-{
-"name": "test rest client"
-}
+# {
+# "name": "test rest client"
+# }

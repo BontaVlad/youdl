@@ -22,6 +22,7 @@ export default class HomeScreen extends React.Component {
 
     componentWillMount() {
         this.fetchData();
+
     }
 
     detail(item) {
@@ -29,7 +30,47 @@ export default class HomeScreen extends React.Component {
     }
 
     async fetchData(){
-        let response = await Donkey.get(urls.PLAYLISTS);
+        // let response = await Donkey.get(urls.PLAYLISTS);
+        let response = 
+            [
+                {
+                    "id": 3,
+                    "owner": 1,
+                    "name": "Test",
+                    "items": []
+                },
+                {
+                    "id": 4,
+                    "owner": 1,
+                    "name": "Test2",
+                    "items": []
+                },
+                {
+                    "id": 7,
+                    "owner": 1,
+                    "name": "Test 3",
+                    "items": []
+                },
+                {
+                    "id": 8,
+                    "owner": 1,
+                    "name": "Test 4",
+                    "items": []
+                },
+                {
+                    "id": 9,
+                    "owner": 1,
+                    "name": "Test 5",
+                    "items": []
+                },
+                {
+                    "id": 10,
+                    "owner": 1,
+                    "name": "Test 6",
+                    "items": []
+                }
+            ];
+        // let response = await Donkey.get('https://httpbin.org/uuid');
         this.setState({items: response});
         //this.props.navigation.setParams({isAnimating: false});
     }
@@ -46,7 +87,7 @@ export default class HomeScreen extends React.Component {
     async delete(id) {
         // make a more pretty url build
         try {
-            await Donkey.delete(urls.PLAYLISTS + id + '/');
+            // await Donkey.delete(urls.PLAYLISTS + id + '/');
             _.remove(this.state.items, {id: id});
             this.setState({items: this.state.items});
         }
